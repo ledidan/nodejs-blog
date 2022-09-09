@@ -1,0 +1,28 @@
+<div class="mt-4 p-5">
+  <h2>Upload Course</h3>
+  <form method="POST" action="/courses/store">
+    <div class="form-group mb-3">
+      <label for="name" class="form-label">Name of course</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        placeholder="Enter Course's name"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <input type="text" class="form-control" id="description" name="description"/>
+    </div>
+    <div class="mb-3">
+      <label for="videoId" class="form-label">Video URL</label>
+      <input type="text" class="form-control" id="videoId" name="videoId"/>
+    </div>
+    <div class="mb-3">
+      <label for="level" class="form-label">Level</label>
+      <input type="text" class="form-control" id="level" name="level" />
+    </div>
+    <button type="submit" class="btn btn-primary">Add Course</button>
+  </form>
+</div>

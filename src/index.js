@@ -7,6 +7,10 @@ const port = 3000;
 const db = require("./config/db");
 const route = require("./routes");
 
+// Body-parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Connect DB
 db.connect();
 
