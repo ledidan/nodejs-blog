@@ -3,6 +3,17 @@
   "version": "1.0.0",
   "description": "learn for node'js project",
   "main": "src/index.js",
+  "prettier": {
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.hbs",
+        "options": {
+          "parser": "babel"
+        }
+      }
+    ]
+  },
   "scripts": {
     "start": "nodemon src/index.js",
     "watch": "node-sass --watch src/resources/scss/ -o src/public/css/",
@@ -11,9 +22,13 @@
   "author": "blackdoudble.d",
   "license": "ISC",
   "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.5",
     "express": "^4.18.1",
     "express-handlebars": "^6.0.6",
-    "mongoose": "^6.5.5"
+    "method-override": "^3.0.0",
+    "mongoose": "^6.5.5",
+    "mongoose-delete": "^0.5.4",
+    "mongoose-slug-generator": "^1.0.4"
   },
   "devDependencies": {
     "morgan": "^1.10.0",

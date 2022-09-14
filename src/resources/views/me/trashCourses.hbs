@@ -1,0 +1,127 @@
+<div class='container'>
+  <div class='mt-4'>
+    <div class="">
+      <h3>
+        Bin
+      </h3>
+      <a href="/me/stored/courses">All Courses Deleted</a>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+        <label class="form-check-label" for="flexCheckDefault">
+          Select All
+        </label>
+      </div>
+    </div>
+
+    <table class='table'>
+      <thead>
+        <tr>
+          <th scope='col'>
+            #
+          </th>
+          <th scope='col'>
+            Name of Course
+          </th>
+          <th scope='col'>
+            Level
+          </th>
+          <th scope='col'>
+            Time Deleted
+          </th>
+          <th scope='col' colspan='2'></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each courses}}
+          <tr>
+            <th scope='row'>
+              {{sum @index 1}}
+            </th>
+            <td>
+              {{this.name}}
+            </td>
+            <td>
+              {{this.level}}
+            </td>
+            <td>
+              {{this.deletedAt}}
+            </td>
+            <td>
+              <a href="">
+                <button type='button' class='btn btn-primary btn-restore' data-id="{{this._id}}">
+                  Restore
+                </button>
+              </a>
+            </td>
+            <td>
+              <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#deleteCourse'
+                data-id='{{this._id}}'>
+                Delete
+              </button>
+            </td>
+          </tr>
+        {{else}}
+          <tr>
+            <td colspan="5" class="text-center ">Empty Deleted Course. <a href="/me/stored/courses"
+                class="text-decoration-none">Back to your course</a></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+{{! Confirm Delete Course }}
+<!-- Modal -->
+<div class='modal fade' id='deleteCourse' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='exampleModalLabel'>
+          Delete Forever Confirmation
+        </h5>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body'>
+        <p>This action cannot be restored. Are you sure to delete it ? </p>
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-danger' id='btnDeleteCourse'>
+          Delete forever
+        </button>
+        <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{{! Delete Hidden Form }}
+<form name='deleteCourseForm' method='POST'></form>
+<form name='restoreCourseForm' method='POST'></form>
+<script>
+  { { !--Delete Form-- } }
+  var courseId;
+  const deleteCourse = document.getElementById("deleteCourse");
+  deleteCourse.addEventListener("show.bs.modal", (event) => {
+    const button = event.relatedTarget;
+    courseId = button.getAttribute("data-id");
+  });
+  const btnDelete = document.getElementById("btnDeleteCourse");
+  btnDelete.onclick = () => {
+    const deleteForm = document.forms["deleteCourseForm"];
+    deleteForm.action = "/courses/" + courseId + "/force?_method=DELETE";
+    deleteForm.submit();
+  };
+
+
+  { { !--Restore Click-- } }
+  const restoreBtn = $('.btn-restore')
+  const restoreForm = document.forms["restoreCourseForm"];
+  restoreBtn.click((e) => {
+    e.preventDefault();
+    const courseId = $(e.target).data("id");
+    restoreForm.action = "/courses/" + courseId + "/restore?_method=PATCH";
+    restoreForm.submit();
+  })
+
+</script>

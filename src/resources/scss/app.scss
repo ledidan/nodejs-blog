@@ -1,1 +1,16 @@
 @import 'variable';
+
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    margin: 0 8px;
+    border-radius: 50%;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.checkbox-selectAll-options {
+    max-width: 180px;
+}
