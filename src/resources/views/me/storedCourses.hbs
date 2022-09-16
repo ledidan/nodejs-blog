@@ -11,27 +11,33 @@
           Select All
         </label>
       </div>
-      <select class="form-select form-select-sm checkbox-selectAll-options mx-3" name="action" aria-label="Default select example" required>
+      <select class="form-select form-select-sm checkbox-selectAll-options mx-3" name="action"
+        aria-label="Default select example" required>
         <option value="" selected> -- Choose Action </option>
         <option value="delete"> -- Delete -- </option>
       </select>
       <button type="submit" class="btn btn-primary btn-checkAll-submit btn-sm" disabled>Exec</button>
     </div>
-    <table class='table'>
+
+
+    <table class='table my-4'>
       <thead>
         <tr>
           <th scope='col'>
             #
           </th>
-          <th scope="col" >STT</th>
+          <th scope="col">STT</th>
           <th scope='col'>
             Name of Course
+            {{{sortable 'name' _sort}}}
           </th>
           <th scope='col'>
             Level
+             {{{sortable 'level' _sort}}}
           </th>
           <th scope='col'>
             Time Created
+             {{{sortable 'createAt' _sort}}}
           </th>
           <th scope='col' colspan='2'></th>
         </tr>
@@ -48,7 +54,7 @@
               {{sum @index 1}}
             </th>
             <td>
-            <a href="/courses/{{this.slug}}" class="text-decoration-none text-dark fw-bold">{{this.name}}</a>
+              <a href="/courses/{{this.slug}}" class="text-decoration-none text-dark fw-bold">{{this.name}}</a>
             </td>
             <td>
               {{this.level}}

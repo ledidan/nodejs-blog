@@ -8,16 +8,20 @@ const port = 3000;
 const db = require('./config/db');
 const route = require('./routes');
 const methodOverride = require('method-override');
+const sortMiddleware = require('./app/middleware/sortMiddlewareEdit');
 // Import function exported by newly installed node modules.
 const {
   allowInsecurePrototypeAccess,
 } = require('@handlebars/allow-prototype-access');
-
+// Config Middleware
+app.use(sortMiddleware);
 // methodOverride
 app.use(methodOverride('_method'));
 // Body-parser
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+  extended: true
+}));
 
 // Connect DB
 db.connect();
@@ -31,6 +35,26 @@ app.engine(
     extname: '.hbs',
     helpers: {
       sum: (a, b) => a + b,
+      sortable: (field, sort) => {
+
+        const sortType = field === sort.column ? sort.type : 'default';
+
+        const icons = {
+          default: 'bi bi-arrow-down-up',
+          asc: 'bi bi-sort-alpha-up',
+          desc: 'bi bi-sort-alpha-down-alt',
+        };
+        const types = {
+          default: 'desc',
+          asc: 'desc',
+          desc: 'asc',
+        }
+        const icon = icons[sortType];
+        const type = types[sortType]
+        return `<a href="?_sort&column=${field}&type=${type}">
+        <span class="${icon}" style="font-size: 22px;"></span>
+      </a>`;
+      }
     },
     handlebars: allowInsecurePrototypeAccess(Handlebars),
   })
