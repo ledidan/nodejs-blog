@@ -1,21 +1,32 @@
-<div class='container'>
+<form name="delete-form" method="POST" action="/courses/handle-form-action" class='container'>
   <div class='mt-4'>
     <div class="">
       <h3>
         Bin
       </h3>
-      <a href="/me/stored/courses">All Courses Deleted</a>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-        <label class="form-check-label" for="flexCheckDefault">
-          Select All
-        </label>
+      <a href="/me/stored/courses"> All Courses Deleted </a>
+      <div class="d-flex align-items-center my-2">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="checkAll">
+          <label class="form-check-label" for="checkAll">
+            Select All
+          </label>
+        </div>
+        <select class="form-select form-select-sm checkbox-selectAll-options mx-3" name="action"
+          aria-label="Default select example" required>
+          <option value="" selected> -- Choose Action </option>
+          <option value="deleteForce"> -- Delete -- </option>
+          <option value="restoredForce"> -- Restore -- </option>
+        </select>
+        <button type="submit" class="btn btn-primary btn-checkAll-submit btn-sm" data-bs-toggle='modal'
+          data-bs-target='#deleteCourse' disabled>Exec</button>
       </div>
     </div>
 
     <table class='table'>
       <thead>
         <tr>
+          <th scope="col"></th>
           <th scope='col'>
             #
           </th>
@@ -34,6 +45,11 @@
       <tbody>
         {{#each courses}}
           <tr>
+            <td>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="courseIds" value="{{this._id}}">
+              </div>
+            </td>
             <th scope='row'>
               {{sum @index 1}}
             </th>
@@ -69,7 +85,7 @@
       </tbody>
     </table>
   </div>
-</div>
+</form>
 {{! Confirm Delete Course }}
 <!-- Modal -->
 <div class='modal fade' id='deleteCourse' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
@@ -99,24 +115,23 @@
 <form name='deleteCourseForm' method='POST'></form>
 <form name='restoreCourseForm' method='POST'></form>
 <script>
-  { { !--Delete Form-- } }
   var courseId;
   const deleteCourse = document.getElementById("deleteCourse");
   deleteCourse.addEventListener("show.bs.modal", (event) => {
     const button = event.relatedTarget;
     courseId = button.getAttribute("data-id");
   });
+  // DELETE FORCE
   const btnDelete = document.getElementById("btnDeleteCourse");
   btnDelete.onclick = () => {
     const deleteForm = document.forms["deleteCourseForm"];
     deleteForm.action = "/courses/" + courseId + "/force?_method=DELETE";
     deleteForm.submit();
   };
-
-
-  { { !--Restore Click-- } }
+  // RESTORE BUTTON
   const restoreBtn = $('.btn-restore')
   const restoreForm = document.forms["restoreCourseForm"];
+
   restoreBtn.click((e) => {
     e.preventDefault();
     const courseId = $(e.target).data("id");
@@ -124,4 +139,31 @@
     restoreForm.submit();
   })
 
+  const btnCheckDeleteAll = $('.delete-form');
+  const checkboxAll = $('#checkAll');
+  const courseItemCheckbox = $('input[name="courseIds"]');
+
+  checkboxAll.change((e) => {
+    const isCheckedAll = $(e.target).prop('checked');
+    courseItemCheckbox.prop('checked', isCheckedAll);
+    renderCheckAllSubmitBtn();
+  })
+
+  // Course item checkbox change
+  courseItemCheckbox.change((e) => {
+    const isCheckedAll = courseItemCheckbox.length === $('input[name="courseIds"]:checked').length;
+    checkboxAll.prop('checked', isCheckedAll);
+    renderCheckAllSubmitBtn();
+  })
+
+  // Re-render Check all submit button
+  const btnCheckSubmit = $('.btn-checkAll-submit');
+  function renderCheckAllSubmitBtn() {
+    const checkCount = $('input[name="courseIds"]:checked').length;
+    if (checkCount > 0) {
+      btnCheckSubmit.attr('disabled', false)
+    } else {
+      btnCheckSubmit.attr('disabled', true)
+    }
+  }
 </script>
