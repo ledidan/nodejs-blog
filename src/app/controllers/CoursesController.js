@@ -54,17 +54,13 @@ class CoursesController {
       .catch(next);
   }
   //   [POST] /courses/store
-  store(req, res) {
-    const formData = {
-      ...req.body
-    };
-    formData.image = `https://i.ytimg.com/vi/${req.body.videoId}/hq720.jpg`;
-    const course = new Course(formData);
-    course.save();
+  store(req, res, next) {
+    req.body.image = `https://i.ytimg.com/vi/${req.body.videoId}/hq720.jpg`
+    const course = new Course(req.body);
+    course.save().then(() => res.redirect('/me/stored/courses')).catch(next);
 
-    res.redirect('/me/stored/courses');
   }
-  // [PATCH] /courses/:id/restore
+  // [PATCH] /coursess/:id/restore
   restore(req, res, next) {
     Course.restore({
         _id: req.params.id

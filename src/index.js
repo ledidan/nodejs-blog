@@ -33,29 +33,7 @@ app.engine(
   exphbs.engine({
     defaultLayout: 'main',
     extname: '.hbs',
-    helpers: {
-      sum: (a, b) => a + b,
-      sortable: (field, sort) => {
-
-        const sortType = field === sort.column ? sort.type : 'default';
-
-        const icons = {
-          default: 'bi bi-arrow-down-up',
-          asc: 'bi bi-sort-alpha-up',
-          desc: 'bi bi-sort-alpha-down-alt',
-        };
-        const types = {
-          default: 'desc',
-          asc: 'desc',
-          desc: 'asc',
-        }
-        const icon = icons[sortType];
-        const type = types[sortType]
-        return `<a href="?_sort&column=${field}&type=${type}">
-        <span class="${icon}" style="font-size: 22px;"></span>
-      </a>`;
-      }
-    },
+    helpers: require('./app/helpers/handlebars'),
     handlebars: allowInsecurePrototypeAccess(Handlebars),
   })
 );
