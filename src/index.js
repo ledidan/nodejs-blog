@@ -9,12 +9,15 @@ const db = require('./config/db');
 const route = require('./routes');
 const methodOverride = require('method-override');
 const sortMiddleware = require('./app/middleware/sortMiddlewareEdit');
+const allowCORS = require('./app/middleware/allowCORSMiddleware');
+
 // Import function exported by newly installed node modules.
 const {
   allowInsecurePrototypeAccess,
 } = require('@handlebars/allow-prototype-access');
 // Config Middleware
 app.use(sortMiddleware);
+app.use(allowCORS);
 // methodOverride
 app.use(methodOverride('_method'));
 // Body-parser
